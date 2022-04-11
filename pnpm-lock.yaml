@@ -30,29 +30,7 @@ importers:
       tslib: 2.3.1
       typescript: 4.6.3
 
-  packages/demo:
-    specifiers:
-      ant-design-vue: ^3.1.1
-      axios: ^0.26.1
-      vue: ^3.2.31
-    devDependencies:
-      ant-design-vue: 3.1.1_vue@3.2.31
-      axios: 0.26.1
-      vue: 3.2.31
-
   packages/demo1:
-    specifiers:
-      ant-design-vue: ^3.1.1
-      axios: ^0.26.1
-      typescript: ^4.6.3
-      vue: ^3.2.31
-    devDependencies:
-      ant-design-vue: 3.1.1_vue@3.2.31
-      axios: 0.26.1
-      typescript: 4.6.3
-      vue: 3.2.31
-
-  packages/demo2:
     specifiers:
       ant-design-vue: ^3.1.1
       axios: ^0.26.1

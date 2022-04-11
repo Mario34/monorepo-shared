@@ -32,5 +32,6 @@ const getUnpublishedPkg = async () => {
 }
 
 module.exports = {
+  getPkgJson,
   getUnpublishedPkg
 }
