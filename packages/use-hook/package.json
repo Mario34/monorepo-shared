@@ -1,0 +1,18 @@
+{
+  "name": "@mario34/use-hook",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/use-hook.d.ts",
+  "files": [
+    "dist"
+  ],
+  "buildConfig": {
+    "build": true
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.6.3"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "@beicaizs/demo1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/demo1.d.ts",
+  "files": [
+    "dist"
+  ],
+  "buildConfig": {
+    "build": true
+  },
+  "devDependencies": {
+    "ant-design-vue": "^3.1.1",
+    "axios": "^0.26.1",
+    "typescript": "^4.6.3",
+    "vue": "^3.2.31"
+  },
+  "peerDependencies": {
+    "ant-design-vue": "^3.1.1",
+    "axios": "^0.26.1",
+    "vue": "^3.2.31"
+  }
+}
