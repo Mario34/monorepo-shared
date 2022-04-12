@@ -2,7 +2,9 @@
   "name": "@mario34/use-hook",
   "version": "0.1.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "browser": "dist/index.umd.js",
   "types": "dist/use-hook.d.ts",
   "files": [
     "dist"
@@ -12,7 +14,7 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "typescript": "^4.6.3"
+  "peerDependencies": {
+    "vue": "^3.2.31"
   }
 }
