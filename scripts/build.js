@@ -18,9 +18,7 @@ const build = async (pkg) => {
   const bundle = await rollup.rollup({
     input: path.resolve(pkgDir, 'src/index.ts'),
     external: [
-      'axios',
-      'ant-design-vue',
-      'vue'
+      ...Object.keys(pkg.peerDependencies || {}),
     ],
     plugins: [
       typescript({
