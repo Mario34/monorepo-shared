@@ -17,24 +17,41 @@ const build = async (pkg) => {
   // rollup build
   const bundle = await rollup.rollup({
     input: path.resolve(pkgDir, 'src/index.ts'),
-    plugins: [typescript({
-      clean: true,
-      tsconfig: path.resolve(root, 'tsconfig.json'),
-      tsconfigOverride: {
-        compilerOptions: {
-          declaration: true,
-          rootDir: path.resolve(pkgDir),
-        },
-        include: [
-          path.resolve(pkgDir),
-        ]
-      }
-    })],
+    external: [
+      'axios',
+      'ant-design-vue',
+      'vue'
+    ],
+    plugins: [
+      typescript({
+        clean: true,
+        check: false, // FIXED: https://github.com/ezolenko/rollup-plugin-typescript2/issues/234
+        tsconfig: path.resolve(root, 'tsconfig.json'),
+        tsconfigOverride: {
+          compilerOptions: {
+            declaration: true,
+            rootDir: path.resolve(pkgDir),
+          },
+          include: [
+            path.resolve(pkgDir),
+          ]
+        }
+      })
+    ],
   })
+  // module
   await bundle.write({
     output: {
-      file: path.resolve(pkgDir, 'dist/index.js'),
+      file: path.resolve(pkgDir, pkg.module),
       format: 'esm',
+    },
+  });
+  // main
+  await bundle.write({
+    output: {
+      file: path.resolve(pkgDir, pkg.main),
+      format: 'cjs',
+      exports: 'named'
     },
   });
 
