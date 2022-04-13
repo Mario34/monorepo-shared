@@ -12,7 +12,6 @@ const getPkgJson = () => {
     pre.push({
       ...require(path.resolve(root, curr)),
       __path__: curr.replace('/package.json', ''),
-      __name__: curr.replace('/package.json', '').replace('packages/', ''),
     })
     return pre
   }, [])

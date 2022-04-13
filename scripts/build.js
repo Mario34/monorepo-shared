@@ -14,7 +14,7 @@ function findPkgMeta(name) {
 
 const build = async (pkg) => {
   const pkgDir = pkg.__path__
-  const pkgMeta = findPkgMeta(pkg.__name__)
+  const pkgMeta = findPkgMeta(pkg.name)
   const iifeGlobals = {
     ...(pkgMeta.globals || {}),
   }
