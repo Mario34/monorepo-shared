@@ -4,12 +4,21 @@ const fs = require('fs-extra')
 const chalk = require('chalk')
 const typescript = require('rollup-plugin-typescript2');
 const { Extractor, ExtractorConfig } = require('@microsoft/api-extractor')
-
+const { packages } = require('../meta/packages')
 const root = path.resolve(__dirname, '..')
 const { getUnpublishedPkg } = require('./pkg')
 
+function findPkgMeta(name) {
+  return packages.find(pkg => pkg.name === name)
+}
+
 const build = async (pkg) => {
   const pkgDir = pkg.__path__
+  const pkgMeta = findPkgMeta(pkg.__name__)
+  const iifeGlobals = {
+    ...(pkgMeta.globals || {}),
+  }
+  const iifeName = pkgMeta.iifeName
 
   // clean up
   await fs.remove(path.resolve(pkgDir, 'dist'))
@@ -19,6 +28,7 @@ const build = async (pkg) => {
     input: path.resolve(pkgDir, 'src/index.ts'),
     external: [
       ...Object.keys(pkg.peerDependencies || {}),
+      ...(pkgMeta.external || [])
     ],
     plugins: [
       typescript({
@@ -37,21 +47,36 @@ const build = async (pkg) => {
       })
     ],
   })
-  // module
-  await bundle.write({
-    output: {
-      file: path.resolve(pkgDir, pkg.module),
-      format: 'esm',
-    },
-  });
   // main
-  await bundle.write({
-    output: {
-      file: path.resolve(pkgDir, pkg.main),
-      format: 'cjs',
-      exports: 'named'
-    },
-  });
+  if (pkg.main) {
+    await bundle.write({
+      output: {
+        file: path.resolve(pkgDir, pkg.main),
+        format: 'cjs',
+        exports: 'named'
+      },
+    });
+  }
+  // module
+  if (pkg.module) {
+    await bundle.write({
+      output: {
+        file: path.resolve(pkgDir, pkg.module),
+        format: 'esm',
+      },
+    });
+  }
+  // iife
+  if (pkg.browser) {
+    await bundle.write({
+      output: {
+        file: path.resolve(pkgDir, pkg.browser),
+        format: 'iife',
+        globals: iifeGlobals,
+        name: iifeName
+      },
+    });
+  }
 
   // generate index.d.ts
   const extractorConfigPath = path.resolve(pkgDir, `api-extractor.json`)

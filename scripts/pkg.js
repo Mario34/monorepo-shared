@@ -9,7 +9,11 @@ const getPkgJson = () => {
     "packages/**/package.json",
     { root, ignore: '**/node_modules/**' }
   ).reduce((pre, curr) => {
-    pre.push({ ...require(path.resolve(root, curr)), __path__: curr.replace('/package.json', '') })
+    pre.push({
+      ...require(path.resolve(root, curr)),
+      __path__: curr.replace('/package.json', ''),
+      __name__: curr.replace('/package.json', '').replace('packages/', ''),
+    })
     return pre
   }, [])
 }
