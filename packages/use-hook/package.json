@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
-  "browser": "dist/index.umd.js",
+  "browser": "dist/index.iife.js",
+  "pkg": "dist/index.iife.js",
   "types": "dist/use-hook.d.ts",
   "files": [
     "dist"

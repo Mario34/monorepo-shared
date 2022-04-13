@@ -2,9 +2,9 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "node scripts/build.js",
-    "create:pkg": "node scripts/create.js",
-    "clean": "node scripts/clean.js"
+    "build": "esno scripts/build.js",
+    "create:pkg": "esno scripts/create.js",
+    "clean": "esno scripts/clean.js"
   },
   "engines": {
     "node": ">=16.5.0"
@@ -15,6 +15,7 @@
     "@microsoft/api-extractor": "^7.21.2",
     "@types/node": "^17.0.23",
     "chalk": "^4.1.2",
+    "esno": "^0.14.1",
     "fs-extra": "^10.0.1",
     "glob": "^7.2.0",
     "pacote": "^13.1.1",
