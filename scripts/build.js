@@ -4,18 +4,21 @@ const fs = require('fs-extra')
 const chalk = require('chalk')
 const typescript = require('rollup-plugin-typescript2');
 const { Extractor, ExtractorConfig } = require('@microsoft/api-extractor')
+const argv = require('minimist')(process.argv.slice(2))
 const root = path.resolve(__dirname, '..')
-const { getUnpublishedPkg } = require('./pkg')
+const { getUnpublishedPkg, getPkgJson } = require('./pkg')
 
 const build = async (pkg) => {
-  const pkgDir = pkg.__path__
-  console.log(pkgDir)
+  const pkgDir = path.resolve(root, pkg.__path__)
   const configPath = path.resolve(root, `${pkgDir}/build.config.js`)
   const existsConfig = fs.existsSync(configPath)
   const buildConfig = existsConfig ? require(configPath) : {}
 
   // clean up
-  await fs.remove(path.resolve(pkgDir, 'dist'))
+  const existsDist = fs.existsSync(path.resolve(root, `${pkgDir}/dist`))
+  if (existsDist) {
+    await fs.remove(path.resolve(pkgDir, 'dist'))
+  }
 
   // rollup build
   const bundle = await rollup.rollup({
@@ -96,9 +99,18 @@ const build = async (pkg) => {
 }
 
 const main = async () => {
-  const pkgs = await (await getUnpublishedPkg()).filter(pkg => pkg.buildConfig && pkg.buildConfig.build)
+  const pkgs = []
+  if (argv.all) {
+    pkgs.push(...getPkgJson().filter(pkg => pkg.buildFlag))
+  } else {
+    pkgs.push(...(await getUnpublishedPkg()).filter(pkg => pkg.buildFlag))
+    if (!pkgs.length) {
+      console.log(chalk.bold(chalk.red('No unpublished packages found')))
+      return
+    }
+  }
+
   if (!pkgs.length) {
-    console.log(chalk.bold(chalk.red('No unpublished packages found')))
     return
   }
 

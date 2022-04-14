@@ -10,9 +10,7 @@
   "files": [
     "dist"
   ],
-  "buildConfig": {
-    "build": true
-  },
+  "buildFlag": true,
   "author": "",
   "license": "ISC",
   "peerDependencies": {

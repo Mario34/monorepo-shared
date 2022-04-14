@@ -17,6 +17,7 @@
     "chalk": "^4.1.2",
     "fs-extra": "^10.0.1",
     "glob": "^7.2.0",
+    "minimist": "^1.2.6",
     "pacote": "^13.1.1",
     "rollup": "^2.70.1",
     "rollup-plugin-typescript2": "^0.31.2",
