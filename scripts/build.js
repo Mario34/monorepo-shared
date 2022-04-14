@@ -4,21 +4,15 @@ const fs = require('fs-extra')
 const chalk = require('chalk')
 const typescript = require('rollup-plugin-typescript2');
 const { Extractor, ExtractorConfig } = require('@microsoft/api-extractor')
-const { packages } = require('../meta/packages')
 const root = path.resolve(__dirname, '..')
 const { getUnpublishedPkg } = require('./pkg')
 
-function findPkgMeta(name) {
-  return packages.find(pkg => pkg.name === name)
-}
-
 const build = async (pkg) => {
   const pkgDir = pkg.__path__
-  const pkgMeta = findPkgMeta(pkg.name)
-  const iifeGlobals = {
-    ...(pkgMeta.globals || {}),
-  }
-  const iifeName = pkgMeta.iifeName
+  console.log(pkgDir)
+  const configPath = path.resolve(root, `${pkgDir}/build.config.js`)
+  const existsConfig = fs.existsSync(configPath)
+  const buildConfig = existsConfig ? require(configPath) : {}
 
   // clean up
   await fs.remove(path.resolve(pkgDir, 'dist'))
@@ -28,7 +22,7 @@ const build = async (pkg) => {
     input: path.resolve(pkgDir, 'src/index.ts'),
     external: [
       ...Object.keys(pkg.peerDependencies || {}),
-      ...(pkgMeta.external || [])
+      ...(buildConfig.external || [])
     ],
     plugins: [
       typescript({
@@ -72,8 +66,8 @@ const build = async (pkg) => {
       output: {
         file: path.resolve(pkgDir, pkg.browser),
         format: 'iife',
-        globals: iifeGlobals,
-        name: iifeName
+        globals: buildConfig.globals || {},
+        name: buildConfig.iifeName
       },
     });
   }
